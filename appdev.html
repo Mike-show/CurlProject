@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>APPDEV 2021</title>  
+        <script>
+            function getdata(){
+                fetch('http://www.cc.puv.fi/~e2002026/curl/record.txt')
+                .then(r => r.text())
+                .then(data => dispdataTxt(data));
+                console.log(data);
+            };
+
+            function dispdataTxt(d){
+                var ctt = document.getElementById("data");
+                var canvas = document.getElementById("chart");
+                var ctx = canvas.getContext("2d");
+                var x = 5;
+                var lines = d.split("\n");
+                while(typeof lines[0] !== "undefined"){
+                    var line = lines.shift();
+                    ctt.innerHTML += line +"<br/>";
+                    console.log(line[20], line[21]);
+                    console.log(line[23], line[24]);
+                    var Ymin = 3 * (100 - (line[20] + line[21]));
+                    var Ymax = 3 * (100 - (line[23] + line[24]));
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(x,Ymin,10,canvas.height);
+                    ctx.fillStyle = "blue";
+                    ctx.fillRect(x+10,Ymax,10,canvas.height);
+                    x += 25;
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="getdata()" style = "display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+        <p id = "data" style="margin: 2px;"></p>
+        <canvas id = "chart" width="1500px" height="300px"
+        style="border: 1px solid red;">     
+        </canvas>
+    </body>
+</html>
